@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "438799951033",
+    "firebase_url": "https://usedbook-d123a.firebaseio.com",
+    "project_id": "usedbook-d123a",
+    "storage_bucket": "usedbook-d123a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438799951033:android:09adb1d6d8b194ebbd2768",
+        "android_client_info": {
+          "package_name": "com.laioffer.usedbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438799951033-ikvml13v4sseqk48oki2t6u2klo93srg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.laioffer.usedbook",
+            "certificate_hash": "df52e0a11c991f97a3e64cc028262ad52e1a4834"
+          }
+        },
+        {
+          "client_id": "438799951033-28sslenj4r3vsdkcj7pipghpn74venaf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACjmOSLV2fkCV7Ds2dpQqZokOfUAZdiKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438799951033-28sslenj4r3vsdkcj7pipghpn74venaf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
