@@ -58,7 +58,7 @@
             android:inputType="textPassword"/>
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="REGISTER"
@@ -68,10 +68,11 @@
 
 
         <TextView
+            android:id="@+id/toLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Already had a account"
-            android:layout_below="@+id/btn_login"
+            android:layout_below="@+id/btn_register"
             android:layout_centerHorizontal="true"/>
 
 
