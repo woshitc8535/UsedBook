@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -94,9 +96,12 @@ public class RegisterActivity extends AppCompatActivity {
 
                             reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
-                            HashMap<String, String> hashMap = new HashMap<>();
+                            Date currentTime = Calendar.getInstance().getTime();
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("id", userid);
                             hashMap.put("username", username);
+                            hashMap.put("timeStamp", currentTime);
                             hashMap.put("imageURL", "default");
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {

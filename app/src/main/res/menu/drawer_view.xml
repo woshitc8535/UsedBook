@@ -10,6 +10,6 @@
             android:id="@+id/drawer_return"
             android:checked="false"
             android:icon="@drawable/baseline_settings_black_18dp"
-            android:title="Return" />
+            android:title="Logout" />
     </group>
 </menu>

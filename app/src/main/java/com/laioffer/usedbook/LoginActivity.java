@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText mEmail;
@@ -25,6 +26,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private TextView toRegister;
+
+    //auto login
+    FirebaseUser firebaseUser;
 
     private TextView forgot;
 
@@ -41,6 +45,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
         init();
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            Intent intent = new Intent(getApplicationContext(), ControlPannel.class);
+            startActivity(intent);
+            finish();
+        }
 
         toRegister.setOnClickListener(new View.OnClickListener() {
             @Override

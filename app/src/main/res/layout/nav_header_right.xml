@@ -5,17 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
+    <TextView
         android:id="@+id/chat_bar"
-        layout="@layout/bar_layout"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chat"
+        android:textSize="30dp"
+        android:textAlignment="center"/>
 
-    <view class="androidx.appcompat.app.AlertController$RecycleListView"
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/chat_bar"
-        android:layout_marginTop="20dp">
-    </view>
+        android:layout_marginTop="20dp"/>
 
 
 
