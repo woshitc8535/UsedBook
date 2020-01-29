@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/chat_bar"
+        layout="@layout/bar_layout"/>
+
+    <view class="androidx.appcompat.app.AlertController$RecycleListView"
+        android:id="@+id/chat_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/chat_bar"
+        android:layout_marginTop="20dp">
+    </view>
+
+
+
+
+</RelativeLayout>
