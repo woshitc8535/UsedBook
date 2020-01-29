@@ -12,14 +12,18 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,7 +44,11 @@ import com.google.firebase.storage.UploadTask;
 import com.laioffer.usedbook.Adapaters.UserAdapter;
 import com.laioffer.usedbook.Entity.ChatList;
 import com.laioffer.usedbook.Entity.User;
+import com.laioffer.usedbook.Fragments.MainFragment;
 
+import org.w3c.dom.Text;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,6 +61,7 @@ public class ControlPannel extends AppCompatActivity {
     TextView username;
     ImageView profile;
     NavigationView nav_left, nav_right;
+    EditText search;
 
     RecyclerView recyclerView;
     private List<User> mUsers;
@@ -80,6 +90,31 @@ public class ControlPannel extends AppCompatActivity {
 
 
         init();
+        //search
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                searchUser(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+
+
+
+
+
+
 
         //upload profile
         profile.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +134,10 @@ public class ControlPannel extends AppCompatActivity {
                     profile.setImageResource(R.drawable.upload_img);
                 }
                 else {
-                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile);
+                    Glide.with(getApplicationContext())
+                            .load(user.getImageURL())
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(profile);
                 }
             }
 
@@ -158,11 +196,71 @@ public class ControlPannel extends AppCompatActivity {
         });
 
 
+
+        //init LocationTracker
+        final LocationTracker mLocationTracker = new LocationTracker(this);
+        mLocationTracker.getLocation();
+
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                final TextView location_textview = (TextView) nav_left.getHeaderView(0).findViewById(R.id.location);
+
+                mLocationTracker.getLocation();
+                final double longitude = mLocationTracker.getLongitude();
+                final double latitude = mLocationTracker.getLatitude();
+
+                location_textview.setText("Lat=" + new DecimalFormat(".##").
+                        format(latitude) + ",Lon=" + new DecimalFormat(".##").
+                        format(longitude));
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
+
+
+
+        //set map view
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
+
+
+
     }
 
+    private void searchUser(String toString) {
+        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("Username")
+                .startAt(toString)
+                .endAt(toString + "\uf8ff");
 
 
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
 
     private void init() {
@@ -176,6 +274,7 @@ public class ControlPannel extends AppCompatActivity {
         username = nav_left.getHeaderView(0).findViewById(R.id.username);
         profile = nav_left.getHeaderView(0).findViewById(R.id.profile);
         recyclerView = nav_right.getHeaderView(0).findViewById(R.id.chat_item);
+        search = nav_right.getHeaderView(0).findViewById(R.id.search_text);
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 

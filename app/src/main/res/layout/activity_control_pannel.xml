@@ -25,6 +25,7 @@
         android:id="@+id/nav_view_left"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="#DCDCDC"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer_view"
@@ -35,6 +36,7 @@
         android:id="@+id/nav_view_right"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="#DCDCDC"
         android:layout_gravity="end"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_right"/>
