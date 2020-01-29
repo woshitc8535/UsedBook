@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="marginSize">35dp</dimen>
+    <dimen name="navBarHeight">56dp</dimen>
+    <dimen name="navBarTitleSize">22sp</dimen>
+</resources>
