@@ -4,8 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -29,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +50,7 @@ import com.laioffer.usedbook.Adapaters.UserAdapter;
 import com.laioffer.usedbook.Entity.ChatList;
 import com.laioffer.usedbook.Entity.User;
 import com.laioffer.usedbook.Fragments.MainFragment;
+import com.laioffer.usedbook.Fragments.PostFragment;
 
 import org.w3c.dom.Text;
 
@@ -72,6 +78,8 @@ public class ControlPannel extends AppCompatActivity {
     DatabaseReference databaseReference;
 
     private List<String> usersList;
+
+
 
 
 
@@ -235,8 +243,8 @@ public class ControlPannel extends AppCompatActivity {
 
 
 
-        //set map view
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
+//        //set map view
+//        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
 
 
 
@@ -277,6 +285,18 @@ public class ControlPannel extends AppCompatActivity {
         search = nav_right.getHeaderView(0).findViewById(R.id.search_text);
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
+
+        TabLayout tabLayout =findViewById(R.id.sliding_tabs);
+        ViewPager viewPager = findViewById(R.id.content_frame);
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        viewPagerAdapter.addFragment(new MainFragment(), "Buyer");
+        viewPagerAdapter.addFragment(new PostFragment(), "Seller");
+
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
 
     }
 
@@ -394,6 +414,42 @@ public class ControlPannel extends AppCompatActivity {
             }
         }
     }
+
+
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private ArrayList<Fragment> fragments;
+        private ArrayList<String> titles;
+
+        ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+            this.fragments = new ArrayList<>();
+            this.titles = new ArrayList<>();
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+        public void addFragment(Fragment fragment, String title) {
+            fragments.add(fragment);
+            titles.add(title);
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles.get(position);
+        }
+    }
+
 
     // status control
     private void status(String status) {
