@@ -37,15 +37,15 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     @NonNull
     @Override
     public BookAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.book_item,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.book_item, parent, false);
         return new BookAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final BookAdapter.ViewHolder holder, int position) {
         final Book book = mBook.get(position);
-        holder.bookName.setText(book.getBookName());
-        holder.price.setText("Price: "+ book.getPrice());
+        holder.bookName.setText(book.getTitle());
+        holder.price.setText("Price: " + book.getPrice());
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
@@ -53,8 +53,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
-                    if (user.getId().equals(book.getUploadBy())) {
-                        holder.seller.setText("Seller: "+user.getUsername());
+                    if (user.getId().equals(book.getSellerId())) {
+                        holder.seller.setText("Seller: " + user.getUsername());
                     }
                 }
             }
@@ -67,11 +67,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
 
         //img
-        if (book.getImageURL().equals("defalut")) {
+        if (book.getImgUrl().equals("defalut")) {
             holder.bookImg.setImageResource(R.mipmap.ic_launcher);
-        }
-        else {
-            Glide.with(mContext).load(book.getImageURL()).into(holder.bookImg);
+        } else {
+            Glide.with(mContext).load(book.getImgUrl()).into(holder.bookImg);
         }
 
     }
@@ -82,7 +81,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView bookImg;
         private TextView bookName;
         private TextView price;

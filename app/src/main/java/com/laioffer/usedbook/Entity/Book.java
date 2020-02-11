@@ -10,6 +10,7 @@ public class Book implements Parcelable {
     private String description;
     private String sellerId;
     private String address;
+    private String imgUrl;
 
     public static final Parcelable.Creator<Book> CREATOR
             = new Parcelable.Creator<Book>() {
@@ -34,6 +35,7 @@ public class Book implements Parcelable {
         private String description;
         private String sellerId;
         private String address;
+        private String imgUrl;
 
         public BookBuilder() {
         }
@@ -46,6 +48,7 @@ public class Book implements Parcelable {
             b.setDescription(this.description);
             b.setSellerId(this.sellerId);
             b.setAddress(this.address);
+            b.setImgUrl(this.imgUrl);
             return b;
         }
 
@@ -76,6 +79,11 @@ public class Book implements Parcelable {
 
         public BookBuilder setAddress(String address) {
             this.address = address;
+            return this;
+        }
+
+        public BookBuilder setImgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
             return this;
         }
     }
@@ -128,6 +136,14 @@ public class Book implements Parcelable {
         this.address = address;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -141,6 +157,7 @@ public class Book implements Parcelable {
         parcel.writeString(description);
         parcel.writeString(sellerId);
         parcel.writeString(address);
+        parcel.writeString(imgUrl);
     }
 
     private Book(Parcel in) {
@@ -150,5 +167,6 @@ public class Book implements Parcelable {
         description = in.readString();
         sellerId = in.readString();
         address = in.readString();
+        imgUrl = in.readString();
     }
 }

@@ -99,9 +99,8 @@ public class PostFragment extends Fragment {
 
                 if (TextUtils.isEmpty(text_bookName) || TextUtils.isEmpty(text_bookPrice) || TextUtils.isEmpty(text_decription)) {
                     Toast.makeText(getContext(), "All Fields are needed1", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    uploadBook(text_bookName,text_bookPrice,text_decription);
+                } else {
+                    uploadBook(text_bookName, text_bookPrice, text_decription);
                     Toast.makeText(getContext(), "Successful upload", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -120,8 +119,8 @@ public class PostFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mBook.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Book book =snapshot.getValue(Book.class);
-                    if (book.getUploadBy().equals(firebaseUser.getUid())) {
+                    Book book = snapshot.getValue(Book.class);
+                    if (book.getSellerId().equals(firebaseUser.getUid())) {
                         mBook.add(book);
                     }
                 }
@@ -144,10 +143,10 @@ public class PostFragment extends Fragment {
         reference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("bookName",text_bookName);
-        hashMap.put("uploadBy",userid);
-        hashMap.put("price",text_bookPrice);
-        hashMap.put("description",text_decription);
+        hashMap.put("bookName", text_bookName);
+        hashMap.put("uploadBy", userid);
+        hashMap.put("price", text_bookPrice);
+        hashMap.put("description", text_decription);
         hashMap.put("imageURL", "default");
 
         reference.child("Books").push().setValue(hashMap);

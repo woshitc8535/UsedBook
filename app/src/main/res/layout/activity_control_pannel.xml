@@ -7,9 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".ControlPannel">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <!--    TODO: temp button, to be removed-->
+        <Button
+            android:id="@+id/temp_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test to detail activity" />
 
         <RelativeLayout
             android:id="@+id/search_bar"
@@ -21,26 +29,24 @@
                 android:id="@+id/profile_out"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/menu"/>
+                android:src="@drawable/menu" />
 
             <EditText
                 android:id="@+id/search_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/profile_out"
                 android:layout_toLeftOf="@+id/chat_out"
+                android:layout_toRightOf="@id/profile_out"
                 android:height="48dp"
-                android:hint="Search..."/>
+                android:hint="Search..." />
 
 
             <ImageView
                 android:id="@+id/chat_out"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/chat_out"
-                android:layout_alignParentRight="true"/>
-
-
+                android:layout_alignParentRight="true"
+                android:src="@drawable/chat_out" />
 
 
         </RelativeLayout>
@@ -48,11 +54,12 @@
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/content_frame"
-            android:layout_above="@+id/sliding_tabs"
-            android:layout_below="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/sliding_tabs"></androidx.viewpager.widget.ViewPager>
+            android:layout_above="@+id/sliding_tabs"
+            android:layout_below="@+id/search_bar">
+
+        </androidx.viewpager.widget.ViewPager>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/sliding_tabs"

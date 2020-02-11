@@ -87,8 +87,7 @@ public class ControlPannel extends AppCompatActivity {
     private ImageView chat;
     private EditText searchBar;
 
-
-
+    private Button mButton;
 
 
     //storage
@@ -137,9 +136,6 @@ public class ControlPannel extends AppCompatActivity {
                 drawerLayout.openDrawer(Gravity.RIGHT);
             }
         });
-
-
-
 
 
         //upload profile
@@ -331,6 +327,7 @@ public class ControlPannel extends AppCompatActivity {
                         .setDescription("test test test")
                         .setAddress("800 E Fremont Ave")
                         .setSellerId("1234567")
+                        .setImgUrl("https://www.google.com/imgres?imgurl=https%3A%2F%2Fstorage.googleapis.com%2Fgd-wagtail-prod-assets%2Fimages%2Fevolving_google_identity_2x.max-4000x2000.jpegquality-90.jpg&imgrefurl=https%3A%2F%2Fdesign.google%2Flibrary%2Fevolving-google-identity%2F&tbnid=qZcGMELPKtbGvM&vet=12ahUKEwiOhd2v78jnAhVpBDQIHVd1BxMQMygAegUIARCLAg..i&docid=4aQ0r7NfC0dsEM&w=2432&h=1216&q=google&hl=en&authuser=0&ved=2ahUKEwiOhd2v78jnAhVpBDQIHVd1BxMQMygAegUIARCLAg")
                         .build();
                 Intent intent = new Intent(ControlPannel.this, DetailActivity.class);
                 intent.putExtra(DetailActivity.BookIntentKey, book);
