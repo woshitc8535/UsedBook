@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -81,8 +82,14 @@ public class ControlPannel extends AppCompatActivity {
 
     private List<String> usersList;
 
-    //TODO: temporary button, to be removed
-    private Button mButton;
+
+    private ImageView menu;
+    private ImageView chat;
+    private EditText searchBar;
+
+
+
+
 
     //storage
     StorageReference storageReference;
@@ -97,7 +104,7 @@ public class ControlPannel extends AppCompatActivity {
 
 
         init();
-        //search
+        //chat window     search
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -114,6 +121,25 @@ public class ControlPannel extends AppCompatActivity {
 
             }
         });
+
+
+        //pop up drawerLayout by click
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
+
+
+
 
 
         //upload profile
@@ -272,6 +298,12 @@ public class ControlPannel extends AppCompatActivity {
         profile = nav_left.getHeaderView(0).findViewById(R.id.profile);
         recyclerView = nav_right.getHeaderView(0).findViewById(R.id.chat_item);
         search = nav_right.getHeaderView(0).findViewById(R.id.search_text);
+
+        //search bar
+        menu = findViewById(R.id.profile_out);
+        chat = findViewById(R.id.chat_out);
+        searchBar = findViewById(R.id.search_content);
+
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
@@ -479,6 +511,3 @@ public class ControlPannel extends AppCompatActivity {
     }
 
 }
-
-
-
