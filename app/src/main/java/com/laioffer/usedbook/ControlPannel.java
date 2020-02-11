@@ -21,6 +21,7 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,10 +48,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.laioffer.usedbook.Adapaters.UserAdapter;
+import com.laioffer.usedbook.Entity.Book;
 import com.laioffer.usedbook.Entity.ChatList;
 import com.laioffer.usedbook.Entity.User;
 import com.laioffer.usedbook.Fragments.MainFragment;
-import com.laioffer.usedbook.Fragments.PostFragment;
+//import com.laioffer.usedbook.Fragments.PostFragment;
 
 import org.w3c.dom.Text;
 
@@ -79,15 +81,12 @@ public class ControlPannel extends AppCompatActivity {
 
     private List<String> usersList;
 
-
-
-
-
-
+    //TODO: temporary button, to be removed
+    private Button mButton;
 
     //storage
     StorageReference storageReference;
-    private static final int IMAGE_REQUEST =  1;
+    private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
     private StorageTask storageTask;
 
@@ -117,13 +116,6 @@ public class ControlPannel extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
-
         //upload profile
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,8 +132,7 @@ public class ControlPannel extends AppCompatActivity {
                 username.setText(user.getUsername());
                 if (user.getImageURL().equals("default")) {
                     profile.setImageResource(R.drawable.upload_img);
-                }
-                else {
+                } else {
                     Glide.with(getApplicationContext())
                             .load(user.getImageURL())
                             .apply(RequestOptions.circleCropTransform())
@@ -200,9 +191,10 @@ public class ControlPannel extends AppCompatActivity {
                     finish();
                 }
                 return true;
-            };
-        });
+            }
 
+            ;
+        });
 
 
         //init LocationTracker
@@ -241,11 +233,8 @@ public class ControlPannel extends AppCompatActivity {
         });
 
 
-
-
 //        //set map view
 //        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
-
 
 
     }
@@ -286,18 +275,36 @@ public class ControlPannel extends AppCompatActivity {
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
-        TabLayout tabLayout =findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         ViewPager viewPager = findViewById(R.id.content_frame);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         viewPagerAdapter.addFragment(new MainFragment(), "Buyer");
-        viewPagerAdapter.addFragment(new PostFragment(), "Seller");
+//        viewPagerAdapter.addFragment(new PostFragment(), "Seller");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-
+        //TODO: temporary button, to be removed
+        mButton = findViewById(R.id.temp_btn);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: construct new book here, temporary
+                Book book = new Book.BookBuilder()
+                        .setTitle("test 1")
+                        .setAuthor("author 1")
+                        .setPrice(10.99)
+                        .setDescription("test test test")
+                        .setAddress("800 E Fremont Ave")
+                        .setSellerId("1234567")
+                        .build();
+                Intent intent = new Intent(ControlPannel.this, DetailActivity.class);
+                intent.putExtra(DetailActivity.BookIntentKey, book);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -380,8 +387,7 @@ public class ControlPannel extends AppCompatActivity {
                         reference.updateChildren(hashMap);
 
                         pd.dismiss();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(ControlPannel.this, "Failed", Toast.LENGTH_SHORT).show();
                         pd.dismiss();
                     }
@@ -393,7 +399,7 @@ public class ControlPannel extends AppCompatActivity {
                     pd.dismiss();
                 }
             });
-        }else {
+        } else {
             Toast.makeText(ControlPannel.this, "No Image selected", Toast.LENGTH_SHORT).show();
         }
     }
@@ -408,13 +414,11 @@ public class ControlPannel extends AppCompatActivity {
 
             if (storageTask != null && storageTask.isInProgress()) {
                 Toast.makeText(ControlPannel.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 uploadImage();
             }
         }
     }
-
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -438,6 +442,7 @@ public class ControlPannel extends AppCompatActivity {
         public int getCount() {
             return fragments.size();
         }
+
         public void addFragment(Fragment fragment, String title) {
             fragments.add(fragment);
             titles.add(title);

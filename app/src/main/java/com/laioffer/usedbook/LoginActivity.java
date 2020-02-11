@@ -71,8 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(text_email) || TextUtils.isEmpty(text_pssword)) {
                     Toast.makeText(LoginActivity.this, "All the filed are needed", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     auth.signInWithEmailAndPassword(text_email, text_pssword)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -82,9 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                         finish();
-                                    }
-                                    else {
-                                        Toast.makeText(LoginActivity.this,"Login Successfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "Login Failed. Please register.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -93,10 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
     }
-
-
 
 
     private void init() {
