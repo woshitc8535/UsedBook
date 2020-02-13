@@ -320,17 +320,19 @@ public class ControlPannel extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO: construct new book here, temporary
-                Book book = new Book.BookBuilder()
-                        .setTitle("test 1")
-                        .setAuthor("author 1")
-                        .setPrice(10.99)
-                        .setDescription("test test test")
-                        .setAddress("800 E Fremont Ave")
-                        .setSellerId("1234567")
-                        .setImgUrl("https://www.google.com/imgres?imgurl=https%3A%2F%2Fstorage.googleapis.com%2Fgd-wagtail-prod-assets%2Fimages%2Fevolving_google_identity_2x.max-4000x2000.jpegquality-90.jpg&imgrefurl=https%3A%2F%2Fdesign.google%2Flibrary%2Fevolving-google-identity%2F&tbnid=qZcGMELPKtbGvM&vet=12ahUKEwiOhd2v78jnAhVpBDQIHVd1BxMQMygAegUIARCLAg..i&docid=4aQ0r7NfC0dsEM&w=2432&h=1216&q=google&hl=en&authuser=0&ved=2ahUKEwiOhd2v78jnAhVpBDQIHVd1BxMQMygAegUIARCLAg")
-                        .build();
+//                Book book = new Book.BookBuilder()
+//                        .setBookId("abcdefg")
+//                        .setTitle("Harry Potter")
+//                        .setAuthor("author 1")
+//                        .setPrice(10.99)
+//                        .setDescription("For test")
+//                        .setAddress("800 E Fremont Ave")
+//                        .setSellerId("96XqkKaSsxQf8lPRmnZwa4A5J7A3")
+//                        .setStatus("POSTING")
+//                        .setImgUrl("https://storage.googleapis.com/gd-wagtail-prod-assets/images/evolving_google_identity_2x.max-4000x2000.jpegquality-90.jpg")
+//                        .build();
                 Intent intent = new Intent(ControlPannel.this, DetailActivity.class);
-                intent.putExtra(DetailActivity.BookIntentKey, book);
+                intent.putExtra(DetailActivity.BookIntentKey, "abcdefg");
                 startActivity(intent);
             }
         });

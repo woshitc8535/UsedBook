@@ -143,11 +143,11 @@ public class PostFragment extends Fragment {
         reference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("bookName", text_bookName);
-        hashMap.put("uploadBy", userid);
+        hashMap.put("title", text_bookName);
+        hashMap.put("sellerId", userid);
         hashMap.put("price", text_bookPrice);
         hashMap.put("description", text_decription);
-        hashMap.put("imageURL", "default");
+        hashMap.put("imgUrl", "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstorage.googleapis.com%2Fgd-wagtail-prod-assets%2Fimages%2Fevolving_google_identity_2x.max-4000x2000.jpegquality-90.jpg&imgrefurl=https%3A%2F%2Fdesign.google%2Flibrary%2Fevolving-google-identity%2F&tbnid=qZcGMELPKtbGvM&vet=12ahUKEwiOhd2v78jnAhVpBDQIHVd1BxMQMygAegUIARCLAg..i&docid=4aQ0r7NfC0dsEM&w=2432&h=1216&q=google&hl=en&authuser=0&ved=2ahUKEwiOhd2v78jnAhVpBDQIHVd1BxMQMygAegUIARCLAg");
 
         reference.child("Books").push().setValue(hashMap);
     }

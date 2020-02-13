@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 String text_pssword = mPassword.getText().toString();
 
                 if (TextUtils.isEmpty(text_email) || TextUtils.isEmpty(text_pssword)) {
-                    Toast.makeText(LoginActivity.this, "All the filed are needed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "All the field are needed", Toast.LENGTH_SHORT).show();
                 } else {
                     auth.signInWithEmailAndPassword(text_email, text_pssword)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

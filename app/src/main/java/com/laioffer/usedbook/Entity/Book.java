@@ -3,7 +3,14 @@ package com.laioffer.usedbook.Entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Book implements Parcelable {
+    public final static String STATUS_POSTING = "POSTING";
+    public final static String STATUS_TRADING = "TRADING";
+    public final static String STATUS_SOLD = "SOLD";
+    private String bookId;
     private String title;
     private String author;
     private Double price;
@@ -11,6 +18,8 @@ public class Book implements Parcelable {
     private String sellerId;
     private String address;
     private String imgUrl;
+    private String status;
+    private String buyerId;
 
     public static final Parcelable.Creator<Book> CREATOR
             = new Parcelable.Creator<Book>() {
@@ -29,6 +38,7 @@ public class Book implements Parcelable {
     }
 
     public static class BookBuilder {
+        private String bookId;
         private String title;
         private String author;
         private Double price;
@@ -36,12 +46,15 @@ public class Book implements Parcelable {
         private String sellerId;
         private String address;
         private String imgUrl;
+        private String status;
+        private String buyerId;
 
         public BookBuilder() {
         }
 
         public Book build() {
             Book b = new Book();
+            b.setBookId(this.bookId);
             b.setTitle(this.title);
             b.setAuthor(this.author);
             b.setPrice(this.price);
@@ -49,7 +62,14 @@ public class Book implements Parcelable {
             b.setSellerId(this.sellerId);
             b.setAddress(this.address);
             b.setImgUrl(this.imgUrl);
+            b.setStatus(STATUS_POSTING);
+            b.setBuyerId("");
             return b;
+        }
+
+        public BookBuilder setBookId(String bookId) {
+            this.bookId = bookId;
+            return this;
         }
 
         public BookBuilder setTitle(String title) {
@@ -86,6 +106,40 @@ public class Book implements Parcelable {
             this.imgUrl = imgUrl;
             return this;
         }
+
+        public BookBuilder setStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public BookBuilder setBuyerId(String buyerId) {
+            this.buyerId = buyerId;
+            return this;
+        }
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBuyerId() {
+        return buyerId;
+    }
+
+    public void setBuyerId(String buyerId) {
+        this.buyerId = buyerId;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public String getTitle() {
@@ -151,6 +205,7 @@ public class Book implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(bookId);
         parcel.writeString(title);
         parcel.writeString(author);
         parcel.writeDouble(price);
@@ -158,9 +213,12 @@ public class Book implements Parcelable {
         parcel.writeString(sellerId);
         parcel.writeString(address);
         parcel.writeString(imgUrl);
+        parcel.writeString(status);
+        parcel.writeString(buyerId);
     }
 
     private Book(Parcel in) {
+        bookId = in.readString();
         title = in.readString();
         author = in.readString();
         price = in.readDouble();
@@ -168,5 +226,21 @@ public class Book implements Parcelable {
         sellerId = in.readString();
         address = in.readString();
         imgUrl = in.readString();
+        status = in.readString();
+        buyerId = in.readString();
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("title", title);
+        result.put("author", author);
+        result.put("price", price);
+        result.put("description", description);
+        result.put("sellerId", sellerId);
+        result.put("address", address);
+        result.put("imgUrl", imgUrl);
+        result.put("status", status);
+        result.put("buyerId", buyerId);
+        return result;
     }
 }
