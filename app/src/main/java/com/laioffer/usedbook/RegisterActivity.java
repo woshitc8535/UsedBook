@@ -58,14 +58,11 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = mPassword.getText().toString();
 
 
-
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                     Toast.makeText(RegisterActivity.this, "All Field are needed", Toast.LENGTH_SHORT).show();
-                }
-                else if (password.length() < 6) {
-                    Toast.makeText(RegisterActivity.this, "The Password length has at least 6", Toast.LENGTH_SHORT);
-                }
-                else {
+                } else if (password.length() < 6) {
+                    Toast.makeText(RegisterActivity.this, "The Password length has at least 6", Toast.LENGTH_SHORT).show();
+                } else {
                     register(username, email, password);
                 }
             }
@@ -117,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                             });
 
                         } else {
-                            Toast.makeText(RegisterActivity.this, "YOu can't Register with this Email" , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "YOu can't Register with this Email", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

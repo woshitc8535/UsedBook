@@ -17,12 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MessageActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
+        <activity android:name=".DetailActivity"></activity>
+        <activity
+            android:name=".MessageActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity android:name=".FriendActivity" />
         <activity
             android:name=".ControlPannel"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
         <activity android:name=".WelcomeActivity" />
         <activity
             android:name=".RegisterActivity"
@@ -40,7 +42,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="googlemapAPI" />
+            android:value= "AIzaSyBFNRmLV8bEPw15tE1fN79y-rlhTmw5Lso" />
     </application>
 
 </manifest>
