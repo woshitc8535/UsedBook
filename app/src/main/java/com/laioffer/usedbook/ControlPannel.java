@@ -4,8 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -14,9 +18,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,9 +49,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.laioffer.usedbook.Adapaters.UserAdapter;
+import com.laioffer.usedbook.Entity.Book;
 import com.laioffer.usedbook.Entity.ChatList;
 import com.laioffer.usedbook.Entity.User;
 import com.laioffer.usedbook.Fragments.MainFragment;
+//import com.laioffer.usedbook.Fragments.PostFragment;
 
 import org.w3c.dom.Text;
 
@@ -74,12 +83,16 @@ public class ControlPannel extends AppCompatActivity {
     private List<String> usersList;
 
 
+    private ImageView menu;
+    private ImageView chat;
+    private EditText searchBar;
 
+    private Button mButton;
 
 
     //storage
     StorageReference storageReference;
-    private static final int IMAGE_REQUEST =  1;
+    private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
     private StorageTask storageTask;
 
@@ -90,7 +103,7 @@ public class ControlPannel extends AppCompatActivity {
 
 
         init();
-        //search
+        //chat window     search
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -109,11 +122,20 @@ public class ControlPannel extends AppCompatActivity {
         });
 
 
+        //pop up drawerLayout by click
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
 
-
-
-
-
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
 
 
         //upload profile
@@ -132,8 +154,7 @@ public class ControlPannel extends AppCompatActivity {
                 username.setText(user.getUsername());
                 if (user.getImageURL().equals("default")) {
                     profile.setImageResource(R.drawable.upload_img);
-                }
-                else {
+                } else {
                     Glide.with(getApplicationContext())
                             .load(user.getImageURL())
                             .apply(RequestOptions.circleCropTransform())
@@ -192,9 +213,10 @@ public class ControlPannel extends AppCompatActivity {
                     finish();
                 }
                 return true;
-            };
-        });
+            }
 
+            ;
+        });
 
 
         //init LocationTracker
@@ -233,11 +255,8 @@ public class ControlPannel extends AppCompatActivity {
         });
 
 
-
-
-        //set map view
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
-
+//        //set map view
+//        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
 
 
     }
@@ -276,8 +295,47 @@ public class ControlPannel extends AppCompatActivity {
         recyclerView = nav_right.getHeaderView(0).findViewById(R.id.chat_item);
         search = nav_right.getHeaderView(0).findViewById(R.id.search_text);
 
+        //search bar
+        menu = findViewById(R.id.profile_out);
+        chat = findViewById(R.id.chat_out);
+        searchBar = findViewById(R.id.search_content);
+
+
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
+        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
+        ViewPager viewPager = findViewById(R.id.content_frame);
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        viewPagerAdapter.addFragment(new MainFragment(), "Buyer");
+//        viewPagerAdapter.addFragment(new PostFragment(), "Seller");
+
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        //TODO: temporary button, to be removed
+        mButton = findViewById(R.id.temp_btn);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: construct new book here, temporary
+//                Book book = new Book.BookBuilder()
+//                        .setBookId("abcdefg")
+//                        .setTitle("Harry Potter")
+//                        .setAuthor("author 1")
+//                        .setPrice(10.99)
+//                        .setDescription("For test")
+//                        .setAddress("800 E Fremont Ave")
+//                        .setSellerId("96XqkKaSsxQf8lPRmnZwa4A5J7A3")
+//                        .setStatus("POSTING")
+//                        .setImgUrl("https://storage.googleapis.com/gd-wagtail-prod-assets/images/evolving_google_identity_2x.max-4000x2000.jpegquality-90.jpg")
+//                        .build();
+                Intent intent = new Intent(ControlPannel.this, DetailActivity.class);
+                intent.putExtra(DetailActivity.BookIntentKey, "abcdefg");
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -360,8 +418,7 @@ public class ControlPannel extends AppCompatActivity {
                         reference.updateChildren(hashMap);
 
                         pd.dismiss();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(ControlPannel.this, "Failed", Toast.LENGTH_SHORT).show();
                         pd.dismiss();
                     }
@@ -373,7 +430,7 @@ public class ControlPannel extends AppCompatActivity {
                     pd.dismiss();
                 }
             });
-        }else {
+        } else {
             Toast.makeText(ControlPannel.this, "No Image selected", Toast.LENGTH_SHORT).show();
         }
     }
@@ -388,12 +445,47 @@ public class ControlPannel extends AppCompatActivity {
 
             if (storageTask != null && storageTask.isInProgress()) {
                 Toast.makeText(ControlPannel.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 uploadImage();
             }
         }
     }
+
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private ArrayList<Fragment> fragments;
+        private ArrayList<String> titles;
+
+        ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+            this.fragments = new ArrayList<>();
+            this.titles = new ArrayList<>();
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            fragments.add(fragment);
+            titles.add(title);
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles.get(position);
+        }
+    }
+
 
     // status control
     private void status(String status) {
@@ -418,6 +510,3 @@ public class ControlPannel extends AppCompatActivity {
     }
 
 }
-
-
-

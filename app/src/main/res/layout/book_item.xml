@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/book_img"
+        android:layout_width="60dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/book_name"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/book_img"
+        android:text="book name"
+        android:textSize="20sp"
+        android:layout_marginLeft="30dp"/>
+
+    <TextView
+        android:id="@+id/seller"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/book_img"
+        android:layout_below="@id/book_name"
+        android:text="seller, and location"
+        android:textSize="20sp"
+        android:layout_marginLeft="30dp"/>
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/book_img"
+        android:layout_below="@id/seller"
+        android:text="price"
+        android:textSize="20sp"
+        android:layout_marginLeft="30dp"/>
+
+
+
+
+
+</RelativeLayout>
