@@ -198,6 +198,10 @@ public class BookDetailActivity extends AppCompatActivity {
                     }
                 }
             });
+//            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Buy");
+
+
+
 
             Intent intent = new Intent(BookDetailActivity.this, ControlPannel.class);
             intent.putExtra("Book", book);
