@@ -6,6 +6,7 @@ public class SellerInfo {
     private String sellerId;
     private String userName;
     private String imageUrl;
+    private String price;
 
     public String getUserName() {
         return userName;
@@ -45,5 +46,13 @@ public class SellerInfo {
 
     public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

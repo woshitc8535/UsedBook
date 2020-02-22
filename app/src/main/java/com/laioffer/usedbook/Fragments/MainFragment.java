@@ -254,7 +254,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
         }
         currentMarker = marker;
         String userName = mseller.getUserName();
+        String bookprice = mseller.getPrice();
         sellerName.setText(userName);
+        price.setText(bookprice);
 
         sellChat = mseller.getSellerId();
 
@@ -271,7 +273,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MessageActivity.class);
-                intent.putExtra("userid", mseller.getSellerId());
+                intent.putExtra("userid", sellChat);
                 startActivity(intent);
 
             }
