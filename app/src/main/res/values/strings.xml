@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UsedBook</string>
+    <string name="app_name">Used Trading Book</string>
 
     <string name="label_btn_buy">Buy Now</string>
     <string name="label_btn_finishTrading">Completed Transaction</string>

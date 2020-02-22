@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.LocationCallback;
@@ -255,8 +256,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
         currentMarker = marker;
         String userName = mseller.getUserName();
         String bookprice = mseller.getPrice();
-        sellerName.setText(userName);
-        price.setText(bookprice);
+        sellerName.setText("Seller: "+ userName);
+        price.setText("Price: " + bookprice + "$");
 
         sellChat = mseller.getSellerId();
 
@@ -264,7 +265,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
             sellerProfile.setImageResource(R.mipmap.ic_launcher);
         }
         else {
-            Glide.with(getContext()).load(mseller.getImageUrl()).into(sellerProfile);
+            Glide.with(getContext()).load(mseller.getImageUrl()).apply(RequestOptions.circleCropTransform()).into(sellerProfile);
         }
 
         goToChat.setImageResource(R.drawable.gotochat);

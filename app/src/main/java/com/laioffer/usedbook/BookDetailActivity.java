@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,11 +47,15 @@ public class BookDetailActivity extends AppCompatActivity {
     private Book book;
     private User seller;
 
+    private Button wish;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
 
+
+        wish = findViewById(R.id.bn_wish);
 
         sellers = new HashSet<>();
         buyers = new HashSet<>();
@@ -110,6 +115,15 @@ public class BookDetailActivity extends AppCompatActivity {
 
         sellerQuery.addGeoQueryEventListener(new SellSearchHandler());
         buyerQuery.addGeoQueryEventListener(new BuySearchHandler());
+
+//               wish.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Buy");
+//
+//            }
+//        });
+
     }
 
     private void refreshSellerBuyerCount() {
@@ -198,7 +212,6 @@ public class BookDetailActivity extends AppCompatActivity {
                     }
                 }
             });
-//            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Buy");
 
 
 

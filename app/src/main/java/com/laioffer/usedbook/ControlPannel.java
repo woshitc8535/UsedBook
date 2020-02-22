@@ -342,7 +342,7 @@ public class ControlPannel extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         viewPagerAdapter.addFragment(new MainFragment(), "Map");
-//        viewPagerAdapter.addFragment(new PostFragment(), "MyBook");
+//        viewPagerAdapter.addFragment(new PostFragment(), "WishList");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

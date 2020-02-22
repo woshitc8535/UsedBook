@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class WelcomeActivity extends AppCompatActivity {
     private Timer myTimer;
+    private ImageView gif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

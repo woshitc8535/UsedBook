@@ -40,8 +40,8 @@
 
             <ImageView
                 android:id="@+id/sellerProile"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="40dp"/>
             <TextView
@@ -50,6 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/sellerProile"
                 android:text="Username"
+                android:textSize="15dp"
+                android:textColor="#FFFFFF"
                 android:layout_marginTop="65dp"
                 android:layout_marginLeft="40dp"/>
 
@@ -59,14 +61,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/seller_name"
                 android:text="price"
+                android:textSize="15dp"
+                android:textColor="#FFFFFF"
                 android:layout_toRightOf="@+id/sellerProile"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="20dp"/>
 
             <ImageView
                 android:id="@+id/goToChat"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="35dp"

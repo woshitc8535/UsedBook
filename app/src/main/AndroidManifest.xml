@@ -17,8 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BookDetailActivity"></activity>
-        <activity android:name=".SearchResultActivity"></activity>
+        <activity
+            android:name=".BookDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity
+            android:name=".SearchResultActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
         <activity
             android:name=".MessageActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />

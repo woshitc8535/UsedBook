@@ -93,6 +93,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sell" />
+
+            <Button
+                android:id="@+id/bn_wish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add to WishList" />
+
+
         </LinearLayout>
 
     </LinearLayout>
