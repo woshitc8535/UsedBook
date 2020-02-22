@@ -26,7 +26,6 @@ public class Book implements Parcelable {
     public String getId() {
         return id;
     }
-
     private String id;
     private String title;
     private String isbn10;

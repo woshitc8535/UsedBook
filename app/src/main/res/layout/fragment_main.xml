@@ -3,19 +3,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.MainFragment">
 
-    <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/bgLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/event_map_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
 
-    </RelativeLayout>
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/event_map_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/nestedScrollView"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="#333333"
+            android:clipToPadding="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/sellerProile"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="40dp"/>
+            <TextView
+                android:id="@+id/seller_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/sellerProile"
+                android:text="Username"
+                android:layout_marginTop="65dp"
+                android:layout_marginLeft="40dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seller_name"
+                android:text="price"
+                android:layout_toRightOf="@+id/sellerProile"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"/>
+
+            <ImageView
+                android:id="@+id/goToChat"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="35dp"
+                android:layout_marginRight="50dp"/>
+
+
+
+
+
+
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </FrameLayout>

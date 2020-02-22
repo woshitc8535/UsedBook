@@ -22,56 +22,10 @@
         android:layout_width="match_parent"
         android:layout_height="230dp">
 
-        <ImageView
-            android:id="@+id/book_img"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/upload_img_white"/>
-
-        <EditText
-            android:id="@+id/book_title"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myBook"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Title"
-            android:layout_toRightOf="@+id/book_img"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"/>
-
-        <EditText
-            android:id="@+id/book_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Price"
-            android:layout_below="@+id/book_title"
-            android:layout_toRightOf="@+id/book_img"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="20dp"/>
-
-        <EditText
-            android:id="@+id/book_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Description"
-            android:layout_below="@+id/book_price"
-            android:layout_toRightOf="@+id/book_img"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="20dp"/>
-
-        <Button
-            android:id="@+id/btn_post"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/book_img"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="15dp"
-            android:text="POST"
-            android:textSize="15dp"/>
-
-
-
-
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 
