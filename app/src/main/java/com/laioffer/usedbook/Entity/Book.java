@@ -2,27 +2,48 @@ package com.laioffer.usedbook.Entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import static android.content.ContentValues.TAG;
 
 public class Book implements Parcelable {
-    public final static String STATUS_POSTING = "POSTING";
-    public final static String STATUS_TRADING = "TRADING";
-    public final static String STATUS_SOLD = "SOLD";
-    private String bookId;
-    private String title;
-    private String author;
-    private Double price;
-    private String description;
-    private String sellerId;
-    private String address;
-    private String imgUrl;
-    private String status;
-    private String buyerId;
+    public String getId() {
+        return id;
+    }
 
-    public static final Parcelable.Creator<Book> CREATOR
-            = new Parcelable.Creator<Book>() {
+    private String id;
+    private String title;
+    private String isbn10;
+    private String isbn13;
+    private String coverImageUrl;
+    private List<String> authors;
+    private String publisher;
+    private String description;
+    private Calendar date;
+
+    static private final SimpleDateFormat[] formats = {
+            new SimpleDateFormat("yyyy-MM-dd"),
+            new SimpleDateFormat("yyyy-MM"),
+            new SimpleDateFormat("yyyy")
+    };
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
         @Override
         public Book createFromParcel(Parcel in) {
             return new Book(in);
@@ -34,169 +55,22 @@ public class Book implements Parcelable {
         }
     };
 
-    private Book() {
+    Book() {
     }
 
-    public static class BookBuilder {
-        private String bookId;
-        private String title;
-        private String author;
-        private Double price;
-        private String description;
-        private String sellerId;
-        private String address;
-        private String imgUrl;
-        private String status;
-        private String buyerId;
-
-        public BookBuilder() {
-        }
-
-        public Book build() {
-            Book b = new Book();
-            b.setBookId(this.bookId);
-            b.setTitle(this.title);
-            b.setAuthor(this.author);
-            b.setPrice(this.price);
-            b.setDescription(this.description);
-            b.setSellerId(this.sellerId);
-            b.setAddress(this.address);
-            b.setImgUrl(this.imgUrl);
-            b.setStatus(STATUS_POSTING);
-            b.setBuyerId("");
-            return b;
-        }
-
-        public BookBuilder setBookId(String bookId) {
-            this.bookId = bookId;
-            return this;
-        }
-
-        public BookBuilder setTitle(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public BookBuilder setAuthor(String author) {
-            this.author = author;
-            return this;
-        }
-
-        public BookBuilder setPrice(Double price) {
-            this.price = price;
-            return this;
-        }
-
-        public BookBuilder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public BookBuilder setSellerId(String sellerId) {
-            this.sellerId = sellerId;
-            return this;
-        }
-
-        public BookBuilder setAddress(String address) {
-            this.address = address;
-            return this;
-        }
-
-        public BookBuilder setImgUrl(String imgUrl) {
-            this.imgUrl = imgUrl;
-            return this;
-        }
-
-        public BookBuilder setStatus(String status) {
-            this.status = status;
-            return this;
-        }
-
-        public BookBuilder setBuyerId(String buyerId) {
-            this.buyerId = buyerId;
-            return this;
-        }
+    protected Book(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        isbn10 = in.readString();
+        isbn13 = in.readString();
+        coverImageUrl = in.readString();
+        authors = in.createStringArrayList();
+        publisher = in.readString();
+        description = in.readString();
+        date = Calendar.getInstance();
+        date.setTimeInMillis(in.readLong());
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getBuyerId() {
-        return buyerId;
-    }
-
-    public void setBuyerId(String buyerId) {
-        this.buyerId = buyerId;
-    }
-
-    public String getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
 
     @Override
     public int describeContents() {
@@ -204,43 +78,97 @@ public class Book implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(bookId);
-        parcel.writeString(title);
-        parcel.writeString(author);
-        parcel.writeDouble(price);
-        parcel.writeString(description);
-        parcel.writeString(sellerId);
-        parcel.writeString(address);
-        parcel.writeString(imgUrl);
-        parcel.writeString(status);
-        parcel.writeString(buyerId);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(isbn10);
+        dest.writeString(isbn13);
+        dest.writeString(coverImageUrl);
+        dest.writeStringList(authors);
+        dest.writeString(publisher);
+        dest.writeString(description);
+        dest.writeLong(date.getTimeInMillis());
     }
 
-    private Book(Parcel in) {
-        bookId = in.readString();
-        title = in.readString();
-        author = in.readString();
-        price = in.readDouble();
-        description = in.readString();
-        sellerId = in.readString();
-        address = in.readString();
-        imgUrl = in.readString();
-        status = in.readString();
-        buyerId = in.readString();
+    public static List<Book> parseSearchResultString(String json) throws JSONException {
+        if (json == null || json.length() == 0) {
+            return null;
+        }
+
+        List<Book> books = new ArrayList<>();
+        JSONArray resultsJsonArray = new JSONObject(json).getJSONArray("items");
+        for (int i = 0; i < resultsJsonArray.length(); i++) {
+            try {
+                books.add(parseBookDetail(resultsJsonArray.getJSONObject(i)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return books;
     }
 
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("title", title);
-        result.put("author", author);
-        result.put("price", price);
-        result.put("description", description);
-        result.put("sellerId", sellerId);
-        result.put("address", address);
-        result.put("imgUrl", imgUrl);
-        result.put("status", status);
-        result.put("buyerId", buyerId);
-        return result;
+    private static Book parseBookDetail(JSONObject json) throws Exception {
+        Book book = new Book();
+
+        // must have
+        book.id = json.getString("id");
+        json = json.getJSONObject("volumeInfo");
+
+        book.title = json.getString("title");
+        // converting form http to https since Google does not allow raw access anymore
+        String url = json.getJSONObject("imageLinks").getString("smallThumbnail");
+        book.coverImageUrl = "https" + url.substring(4);
+
+        JSONArray authorsJSON = json.getJSONArray("authors");
+        book.authors = new ArrayList<>();
+        for (int i = 0; i < authorsJSON.length(); i++) {
+            book.authors.add(authorsJSON.getString(i));
+        }
+
+        // nice to have
+        book.description = json.getString("description");
+        book.publisher = json.getString("publisher");
+
+        JSONArray isbn = json.getJSONArray("industryIdentifiers");
+        for (int i = 0; i < isbn.length(); i++) {
+            JSONObject ithObject = isbn.getJSONObject(i);
+            switch (ithObject.getString("type")) {
+                case "ISBN_13":
+                    book.isbn13 = ithObject.getString("identifier");
+                    break;
+                case "ISBN_10":
+                    book.isbn10 = ithObject.getString("identifier");
+                    break;
+                default:
+                    Log.v(TAG, "Unknown ISBN type: " + ithObject.getString("type"));
+            }
+        }
+
+        book.date = Calendar.getInstance();
+
+        for (SimpleDateFormat f : formats) {
+            try {
+                book.date.setTime(Objects.requireNonNull(f.parse(json.getString("publishedDate"))));
+                return book;
+            } catch (Exception ignored) {
+            }
+        }
+
+        return null;
+    }
+
+    public void populateView(
+            ImageView coverDisplay,
+            TextView titleDisplay,
+            TextView authorDisplay,
+            TextView yearDisplay,
+            TextView publisherDisplay,
+            TextView descriptionDisplay) {
+        if (coverDisplay != null) Picasso.get().load(this.coverImageUrl).into(coverDisplay);
+        if (titleDisplay != null) titleDisplay.setText(this.title);
+        if (authorDisplay != null) authorDisplay.setText("by: " + String.join(", ", this.authors));
+        if (yearDisplay != null) yearDisplay.setText(String.valueOf(this.date.get(Calendar.YEAR)));
+        if (publisherDisplay != null) publisherDisplay.setText("publisher: " + this.publisher);
+        if (descriptionDisplay != null) descriptionDisplay.setText("\t" + this.description);
     }
 }

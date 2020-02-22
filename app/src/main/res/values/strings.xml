@@ -3,4 +3,19 @@
 
     <string name="label_btn_buy">Buy Now</string>
     <string name="label_btn_finishTrading">Completed Transaction</string>
+
+
+    <string name="query_intent_key">searchQuery</string>
+    <string name="column_intent_key">searchColumn</string>
+    <string name="user_name_intent_key">userName</string>
+    <string name="book_intent_key">book</string>
+
+    <string name="success_selling_message">Success! Added book to your Selling List</string>
+    <string name="already_seller_message">Book already in your Selling List</string>
+    <string name="success_buying_message">Success! Added book to your To-Read List</string>
+    <string name="already_buyer_message">Book already in your To-Read List</string>
+
+    <string name="cloud_error_message">Error communicating with cloud database</string>
+
+
 </resources>

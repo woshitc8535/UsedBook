@@ -25,6 +25,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ import com.laioffer.usedbook.Entity.Book;
 import com.laioffer.usedbook.Entity.ChatList;
 import com.laioffer.usedbook.Entity.User;
 import com.laioffer.usedbook.Fragments.MainFragment;
+import com.laioffer.usedbook.Fragments.PostFragment;
 //import com.laioffer.usedbook.Fragments.PostFragment;
 
 import org.w3c.dom.Text;
@@ -85,9 +87,14 @@ public class ControlPannel extends AppCompatActivity {
 
     private ImageView menu;
     private ImageView chat;
-    private EditText searchBar;
 
-    private Button mButton;
+
+    private RadioGroup searchSetting;
+    private EditText searchBox;
+    private Button searchButton;
+    private String searchColumn;
+    private String userId;
+
 
 
     //storage
@@ -103,6 +110,28 @@ public class ControlPannel extends AppCompatActivity {
 
 
         init();
+        //search book
+        userId = FirebaseAuth.getInstance().getUid();
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = searchBox.getText().toString();
+                if (query.length() == 0) {
+                    Toast.makeText(getBaseContext(), "Tell us a little more on the book...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int id = searchSetting.getCheckedRadioButtonId();
+                searchColumn = id == R.id.search_title_radio_button ? "intitle:" : "inauthor:";
+
+                Intent intent = new Intent(getBaseContext(), SearchResultActivity.class);
+                intent.putExtra(getString(R.string.query_intent_key), query);
+                intent.putExtra(getString(R.string.column_intent_key), searchColumn);
+                intent.putExtra(getString(R.string.user_name_intent_key), userId);
+
+                startActivity(intent);
+            }
+        });
         //chat window     search
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -298,7 +327,11 @@ public class ControlPannel extends AppCompatActivity {
         //search bar
         menu = findViewById(R.id.profile_out);
         chat = findViewById(R.id.chat_out);
-        searchBar = findViewById(R.id.search_content);
+        searchBox = findViewById(R.id.search_content);
+
+        searchSetting = findViewById(R.id.search_setting_radio_group);
+        searchSetting.check(R.id.search_title_radio_button);
+        searchButton = findViewById(R.id.search_button);
 
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
@@ -314,28 +347,7 @@ public class ControlPannel extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        //TODO: temporary button, to be removed
-        mButton = findViewById(R.id.temp_btn);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: construct new book here, temporary
-//                Book book = new Book.BookBuilder()
-//                        .setBookId("abcdefg")
-//                        .setTitle("Harry Potter")
-//                        .setAuthor("author 1")
-//                        .setPrice(10.99)
-//                        .setDescription("For test")
-//                        .setAddress("800 E Fremont Ave")
-//                        .setSellerId("96XqkKaSsxQf8lPRmnZwa4A5J7A3")
-//                        .setStatus("POSTING")
-//                        .setImgUrl("https://storage.googleapis.com/gd-wagtail-prod-assets/images/evolving_google_identity_2x.max-4000x2000.jpegquality-90.jpg")
-//                        .build();
-                Intent intent = new Intent(ControlPannel.this, DetailActivity.class);
-                intent.putExtra(DetailActivity.BookIntentKey, "abcdefg");
-                startActivity(intent);
-            }
-        });
+
     }
 
 
