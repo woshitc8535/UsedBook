@@ -273,7 +273,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MessageActivity.class);
-                intent.putExtra("userid", sellChat);
+                intent.putExtra("userid", mseller.getSellerId());
                 startActivity(intent);
 
             }
