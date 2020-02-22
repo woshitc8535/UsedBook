@@ -261,7 +261,7 @@ public class BookDetailActivity extends AppCompatActivity {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("longitude", longitude);
         hashMap.put("latitude", latitude);
-        hashMap.put("seller", userName);
+        hashMap.put("sellerId", userName);
         hashMap.put("imageUrl", seller.getImageURL());
         hashMap.put("userName", seller.getUsername());
         hashMap.put("price", price);
