@@ -17,5 +17,7 @@
 
     <string name="cloud_error_message">Error communicating with cloud database</string>
 
+    <string name="dialog_price_title">Enter the price:</string>
+
 
 </resources>
