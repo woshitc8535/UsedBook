@@ -1,22 +1,23 @@
 package com.laioffer.usedbook;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +43,7 @@ public class BookDetailActivity extends AppCompatActivity {
     private GeoFire buyerGeoFire;
     private double longitude;
     private double latitude;
-    private  Book book;
+    private Book book;
     private User seller;
 
     @Override
@@ -171,36 +172,9 @@ public class BookDetailActivity extends AppCompatActivity {
     class SellButtonHandler implements View.OnClickListener {
 
 
-
         @Override
         public void onClick(final View view) {
-            sellerGeoFire.setLocation(userName, new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
-                Boolean tmp = selfIsASeller;
-
-                @Override
-                public void onComplete(String key, DatabaseError error) {
-                    Context ctx = view.getContext();
-                    if (error != null) {
-                        Toast.makeText(ctx, getString(R.string.cloud_error_message), toastLen).show();
-                    } else {
-                        if (tmp) {
-                            Toast.makeText(ctx, getString(R.string.already_seller_message), toastLen).show();
-                        } else {
-                            Toast.makeText(ctx, getString(R.string.success_selling_message), toastLen).show();
-                        }
-                    }
-                }
-            });
-
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Sell");
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("longitude",longitude);
-            hashMap.put("latitude", latitude);
-            hashMap.put("seller", userName);
-            hashMap.put("imageUrl", seller.getImageURL());
-            hashMap.put("userName", seller.getUsername());
-
-            reference.child(book.getId()).push().setValue(hashMap);
+            buildPriceDialog();
         }
     }
 
@@ -220,15 +194,10 @@ public class BookDetailActivity extends AppCompatActivity {
                             Toast.makeText(ctx, getString(R.string.already_buyer_message), toastLen).show();
                         } else {
                             Toast.makeText(ctx, getString(R.string.success_buying_message), toastLen).show();
-
-
                         }
                     }
                 }
             });
-
-
-
 
             Intent intent = new Intent(BookDetailActivity.this, ControlPannel.class);
             intent.putExtra("Book", book);
@@ -236,6 +205,68 @@ public class BookDetailActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    public void buildPriceDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dialog_price_title));
+        View view = getLayoutInflater().inflate(R.layout.dialog_price, null);
+        final EditText input = view.findViewById(R.id.input);
+        final TextView warning = view.findViewById(R.id.input_warning);
+        builder.setView(view);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                warning.setVisibility(View.GONE);
+                String price = input.getText().toString();
+                try {
+                    double p = Double.parseDouble(price);
+                    dialog.dismiss();
+                    sellBook(String.format("%.2f", p));
+                } catch (Exception e) {
+                    warning.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void sellBook(String price) {
+        sellerGeoFire.setLocation(userName, new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
+            Boolean tmp = selfIsASeller;
+
+            @Override
+            public void onComplete(String key, DatabaseError error) {
+                Context ctx = getApplicationContext();
+                if (error != null) {
+                    Toast.makeText(ctx, getString(R.string.cloud_error_message), toastLen).show();
+                } else {
+                    if (tmp) {
+                        Toast.makeText(ctx, getString(R.string.already_seller_message), toastLen).show();
+                    } else {
+                        Toast.makeText(ctx, getString(R.string.success_selling_message), toastLen).show();
+                    }
+                }
+            }
+        });
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Sell");
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("longitude", longitude);
+        hashMap.put("latitude", latitude);
+        hashMap.put("seller", userName);
+        hashMap.put("imageUrl", seller.getImageURL());
+        hashMap.put("userName", seller.getUsername());
+        hashMap.put("price", price);
+
+        reference.child(book.getId()).push().setValue(hashMap);
     }
 }
 
