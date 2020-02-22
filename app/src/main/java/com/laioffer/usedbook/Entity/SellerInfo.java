@@ -3,7 +3,7 @@ package com.laioffer.usedbook.Entity;
 public class SellerInfo {
     private Double longitude;
     private Double latitude;
-    private String SellerId;
+    private String sellerId;
     private String userName;
     private String imageUrl;
 
@@ -40,10 +40,10 @@ public class SellerInfo {
     }
 
     public String getSellerId() {
-        return SellerId;
+        return sellerId;
     }
 
     public void setSellerId(String sellerId) {
-        SellerId = sellerId;
+        this.sellerId = sellerId;
     }
 }

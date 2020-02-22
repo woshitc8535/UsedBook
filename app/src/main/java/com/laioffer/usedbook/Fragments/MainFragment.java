@@ -1,25 +1,33 @@
 package com.laioffer.usedbook.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.bumptech.glide.Glide;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.LocationCallback;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -27,6 +35,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,13 +44,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.laioffer.usedbook.Entity.Book;
 import com.laioffer.usedbook.Entity.SellerInfo;
+import com.laioffer.usedbook.Entity.User;
 import com.laioffer.usedbook.LocationTracker;
 import com.laioffer.usedbook.MessageActivity;
 import com.laioffer.usedbook.R;
 import com.laioffer.usedbook.Utils;
 
 
-public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MainFragment extends Fragment implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener{
     private MapView mapView;
     private View view;
     private GoogleMap googleMap;
@@ -59,10 +69,12 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private ImageView goToChat;
     private SellerInfo mseller;
 
+    private String sellChat;
+
 
     //bottom
     private void setupBottomBehavior() {
-        final View nestedScrollView = view.findViewById(R.id.nestedScrollView);
+        final View nestedScrollView = (View) view.findViewById(R.id.nestedScrollView);
         bottomSheetBehavior = BottomSheetBehavior.from(nestedScrollView);
 
         //set hidden initially
@@ -76,18 +88,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         price = view.findViewById(R.id.price);
         goToChat = view.findViewById(R.id.goToChat);
 
-        goToChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MessageActivity.class);
 
-                intent.putExtra("userid", mseller.getSellerId());
-                startActivity(intent);
 
-            }
-        });
+
 
     }
+
+
+
+
 
 
     public static MainFragment newInstance() {
@@ -117,10 +126,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         databaseReference = FirebaseDatabase.getInstance().getReference("Sell");
-        book = getActivity().getIntent().getParcelableExtra("Book");
+        book =  getActivity().getIntent().getParcelableExtra("Book");
 
         //google map
-        mapView = this.view.findViewById(R.id.event_map_view);
+        mapView = (MapView) this.view.findViewById(R.id.event_map_view);
         if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();// needed to get the map to display immediately
@@ -156,11 +165,12 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
-
+        googleMap.setOnMarkerClickListener(this);
         this.googleMap = googleMap;
         this.googleMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                         getActivity(), R.raw.style_json));
+
 
 
         locationTracker = new LocationTracker(getActivity());
@@ -176,7 +186,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
                 .build();                   // Creates a CameraPosition from the builder
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        googleMap.setOnMarkerClickListener(this);
 
         MarkerOptions marker = new MarkerOptions().position(latLng).
                 title("You");
@@ -220,7 +229,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
                         LatLng latLng = new LatLng(sellerLatitude, sellerLongitude);
                         MarkerOptions marker = new MarkerOptions().position(latLng).title("seller");
 
-                        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.book_sell);
+                        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.book_sell);
                         Bitmap resizeBitmap = Utils.getResizedBitmap(icon, 130, 130);
                         marker.icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap));
 
@@ -245,9 +254,29 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
         currentMarker = marker;
         String userName = mseller.getUserName();
-
         sellerName.setText(userName);
-        Glide.with(getContext()).load(mseller.getImageUrl()).into(sellerProfile);
+
+        sellChat = mseller.getSellerId();
+
+        if (mseller.getImageUrl().equals("default")) {
+            sellerProfile.setImageResource(R.mipmap.ic_launcher);
+        }
+        else {
+            Glide.with(getContext()).load(mseller.getImageUrl()).into(sellerProfile);
+        }
+
+        goToChat.setImageResource(R.drawable.gotochat);
+
+        goToChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MessageActivity.class);
+                intent.putExtra("userid", mseller.getSellerId());
+                startActivity(intent);
+
+            }
+        });
+
 
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
