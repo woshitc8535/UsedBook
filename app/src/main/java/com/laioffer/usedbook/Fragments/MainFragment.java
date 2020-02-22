@@ -69,6 +69,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
     private ImageView goToChat;
     private SellerInfo mseller;
 
+    private String sellChat;
+
 
     //bottom
     private void setupBottomBehavior() {
@@ -86,16 +88,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
         price = view.findViewById(R.id.price);
         goToChat = view.findViewById(R.id.goToChat);
 
-        goToChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MessageActivity.class);
 
-                intent.putExtra("userid", mseller.getSellerId());
-                startActivity(intent);
 
-            }
-        });
+
 
     }
 
@@ -170,7 +165,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
-
+        googleMap.setOnMarkerClickListener(this);
         this.googleMap = googleMap;
         this.googleMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
@@ -259,13 +254,28 @@ public class MainFragment extends Fragment implements OnMapReadyCallback , Googl
         }
         currentMarker = marker;
         String userName = mseller.getUserName();
-
         sellerName.setText(userName);
-        Glide.with(getContext()).load(mseller.getImageUrl()).into(sellerProfile);
 
+        sellChat = mseller.getSellerId();
 
+        if (mseller.getImageUrl().equals("default")) {
+            sellerProfile.setImageResource(R.mipmap.ic_launcher);
+        }
+        else {
+            Glide.with(getContext()).load(mseller.getImageUrl()).into(sellerProfile);
+        }
 
+        goToChat.setImageResource(R.drawable.gotochat);
 
+        goToChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MessageActivity.class);
+                intent.putExtra("userid", mseller.getSellerId());
+                startActivity(intent);
+
+            }
+        });
 
 
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
