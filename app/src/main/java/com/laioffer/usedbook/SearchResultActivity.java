@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.laioffer.usedbook.Entity.Book;
 import com.laioffer.usedbook.utilities.NetworkUtils;
@@ -31,6 +32,8 @@ public class SearchResultActivity extends AppCompatActivity implements BookAdapt
     private List<Book> mBooksList;
     private String userName;
 
+    private TextView waring;
+
 
 
     @Override
@@ -46,6 +49,8 @@ public class SearchResultActivity extends AppCompatActivity implements BookAdapt
         mSearchResultsRecyclerView.setHasFixedSize(true);
         mSearchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mSearchResultsRecyclerView.setAdapter(mAdapter);
+
+        waring = findViewById(R.id.waring);
 
         Intent intent = getIntent();
         mSearchQuery = intent.getStringExtra(getString(R.string.query_intent_key));
@@ -68,6 +73,7 @@ public class SearchResultActivity extends AppCompatActivity implements BookAdapt
         @Override
         protected void onPreExecute() {
             mProgressBar.setVisibility(View.VISIBLE);
+            waring.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -85,10 +91,13 @@ public class SearchResultActivity extends AppCompatActivity implements BookAdapt
         @Override
         protected void onPostExecute(List<Book> books) {
             mProgressBar.setVisibility(View.INVISIBLE);
-            mSearchResultsRecyclerView.setVisibility(View.VISIBLE);
-            if (books != null) {
+            if (books != null && books.size() > 0) {
+                mSearchResultsRecyclerView.setVisibility(View.VISIBLE);
                 mBooksList.addAll(books);
                 mAdapter.setBooksList(mBooksList);
+            }
+            else {
+                waring.setVisibility(View.VISIBLE);
             }
         }
     }

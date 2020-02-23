@@ -152,8 +152,7 @@ public class Book implements Parcelable {
             } catch (Exception ignored) {
             }
         }
-
-        return null;
+        throw (new Exception("Date Format Unknown: " + json.getString("publishedDate")));
     }
 
     public void populateView(
